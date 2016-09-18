@@ -73,14 +73,16 @@ class AwesomeProject extends Component {
     return (
       <TabLayout>
         <Bars type="Bars">
-          <TabItem key={1} txt="Tab1"/>
-          <TabItem key={2} txt="Tab2"/>
-          <TabItem key={3} txt="Tab3"/>
+          <TabItem key={1} icon="home" txt="首页"/>
+          <TabItem key={2} icon="graduation-cap" txt="招聘"/>
+          <TabItem key={3} icon="heart" txt="收藏"/>
+          <TabItem key={4} icon="github" txt="我"/>
         </Bars>
         <Tabs type="Tabs">
             <ViewPager/>
             <Text>Tab Content2</Text>
             <Text>Tab Content3</Text>
+            <Text>Tab Content4</Text>
         </Tabs>
       </TabLayout>
     );

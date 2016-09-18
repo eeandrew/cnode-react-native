@@ -7,7 +7,7 @@ import {
   Text,
   StyleSheet
 } from 'react-native';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 export default class TabItem extends Component {
   constructor(props) {
     super(props);
@@ -16,12 +16,15 @@ export default class TabItem extends Component {
   render() {
     const {
       active,
-      txt
+      txt,
+      icon,
+      activeColor,
+      inactiveColor
     } = this.props;
-    const activeStyle = active ? styles.active : {};
     return (
       <View style={[styles.tabItem]}>
-        <Text style={[activeStyle]}>{txt}</Text>
+        <Icon name={icon} size={25} color={active?activeColor:inactiveColor}/>
+        <Text style={{color:active?activeColor:inactiveColor}}>{txt}</Text>
       </View>
     );
   }
@@ -33,16 +36,19 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center'
   },
-  active:{
-    color:'#80bd01'
-  }
 });
 
 TabItem.propTypes = {
   txt: PropTypes.string,
-  active: PropTypes.bool
+  icon: PropTypes.string,
+  active: PropTypes.bool,
+  activeColor: PropTypes.string,
+  inactiveColor: PropTypes.string,
 };
 
 TabItem.defaultProps = {
-  active: false
+  active: false,
+  icon:'home',
+  activeColor:'#80bd01',
+  inactiveColor: '#bebebe',
 };
