@@ -11,6 +11,7 @@ import {
   TouchableHighlight,
   StatusBar
 } from 'react-native';
+import autobind from 'autobind-decorator'
 
 export class Bars extends Component {
   constructor(props) {
@@ -41,7 +42,6 @@ export class Tabs extends Component {
 export default class TabLayout extends Component {
   constructor(props) {
     super(props);
-    this.bindFunc();
     this.state = {
       activeIndex:0
     };
@@ -51,13 +51,7 @@ export default class TabLayout extends Component {
     return Dimensions.get('window');
   }
 
-  bindFunc() {
-    let func = ['renderTabs','renderBars','onTabBarClick'];
-    func.forEach((f)=>{
-      this[f] = this[f].bind(this);
-    });
-  }
-
+  @autobind
   onTabBarClick(index) {
     let width = this.window.width;
     this.refs.scrollView.scrollTo({
@@ -70,6 +64,7 @@ export default class TabLayout extends Component {
     });
   }
 
+  @autobind
   renderTabs(tabs) {
     let children = [];
     let tabsCount = React.Children.count(tabs);
@@ -105,6 +100,7 @@ export default class TabLayout extends Component {
     );
   }
 
+  @autobind
   renderBars(bars) {
     let children = [];
     const {

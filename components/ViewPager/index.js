@@ -11,11 +11,11 @@ import {
   TouchableHighlight,
   TouchableWithoutFeedback
 } from 'react-native';
+import autobind from 'autobind-decorator'
 
 export default class ViewPager extends Component {
   constructor(props) {
     super(props);
-    this.onScroll = this.onScroll.bind(this);
     this.onPageChanged = this.onPageChanged.bind(this);
     this.tabsNumber = 4;
     this.state = {
@@ -28,6 +28,7 @@ export default class ViewPager extends Component {
     return Dimensions.get('window');
   }
 
+  @autobind
   onScroll(params) {
     const scrollerX = params.nativeEvent.contentOffset.x;
     const maxHScrollerOffset = this.window.width * (this.tabsNumber -1);
