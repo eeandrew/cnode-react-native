@@ -16,6 +16,7 @@ export default class ViewPager extends Component {
   constructor(props) {
     super(props);
     this.onScroll = this.onScroll.bind(this);
+    this.onPageChanged = this.onPageChanged.bind(this);
     this.tabsNumber = 4;
     this.state = {
       indicatorLeftOffset:0,
@@ -38,6 +39,10 @@ export default class ViewPager extends Component {
         currentPage: Math.floor(scrollerX / this.window.width + 0.5)
       });
     }
+  }
+
+  onPageChanged(pageIndex) {
+
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -75,14 +80,17 @@ export default class ViewPager extends Component {
     const leftOffset = {
       left: this.state.indicatorLeftOffset
     };
+    const {
+      currentPage
+    } = this.state;
     return (
       <View style={[styles.container]}>
         <View style={[styles.header]}>
           <View style={[styles.header]}>
-            <TouchableWithoutFeedback ><View style={[styles.headerItem,styles.headerItemFirst]}><Text>全部</Text></View></TouchableWithoutFeedback>
-            <TouchableWithoutFeedback ><View style={[styles.headerItem,styles.headerItem]}><Text>精华</Text></View></TouchableWithoutFeedback>
-            <TouchableWithoutFeedback ><View style={[styles.headerItem,styles.headerItem]}><Text>分享</Text></View></TouchableWithoutFeedback>
-            <TouchableWithoutFeedback ><View style={[styles.headerItem,styles.headerItemLast]}><Text>问答</Text></View></TouchableWithoutFeedback>
+            <TouchableWithoutFeedback ><View style={[styles.headerItem,styles.headerItemFirst]}><Text style={{color:currentPage === 0 ? '#80bd01' : '#bebebe'}}>全部</Text></View></TouchableWithoutFeedback>
+            <TouchableWithoutFeedback ><View style={[styles.headerItem,styles.headerItem]}><Text style={{color:currentPage === 1 ? '#80bd01' : '#bebebe'}}>精华</Text></View></TouchableWithoutFeedback>
+            <TouchableWithoutFeedback ><View style={[styles.headerItem,styles.headerItem]}><Text style={{color:currentPage === 2 ? '#80bd01' : '#bebebe'}}>分享</Text></View></TouchableWithoutFeedback>
+            <TouchableWithoutFeedback ><View style={[styles.headerItem,styles.headerItemLast]}><Text style={{color:currentPage === 3 ? '#80bd01' : '#bebebe'}}>问答</Text></View></TouchableWithoutFeedback>
             <View style={[styles.indicator,leftOffset]}>
             </View>
            </View>

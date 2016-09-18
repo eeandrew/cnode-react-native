@@ -24,7 +24,7 @@ export default class TabItem extends Component {
     return (
       <View style={[styles.tabItem]}>
         <Icon name={icon} size={25} color={active?activeColor:inactiveColor}/>
-        <Text style={{color:active?activeColor:inactiveColor}}>{txt}</Text>
+        <Text style={[styles.tabTxt,{color:active?activeColor:inactiveColor}]}>{txt}</Text>
       </View>
     );
   }
@@ -36,6 +36,9 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center'
   },
+  tabTxt: {
+    fontSize:11
+  }
 });
 
 TabItem.propTypes = {
