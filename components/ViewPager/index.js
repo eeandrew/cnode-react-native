@@ -18,7 +18,8 @@ export default class ViewPager extends Component {
     this.onScroll = this.onScroll.bind(this);
     this.tabsNumber = 4;
     this.state = {
-      indicatorLeftOffset:0
+      indicatorLeftOffset:0,
+      currentPage:0
     };
   }
 
@@ -33,8 +34,19 @@ export default class ViewPager extends Component {
     if(scrollerX >= 0 && scrollerX <= maxHScrollerOffset) {
       const percent = scrollerX / maxHScrollerOffset;
       this.setState({
-        indicatorLeftOffset: percent * maxScroll
+        indicatorLeftOffset: percent * maxScroll,
+        currentPage: Math.floor(scrollerX / this.window.width + 0.5)
       });
+    }
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    const {
+      currentPage
+    } = this.state;
+    const nextPage = nextState.currentPage;
+    if(currentPage !== nextPage) {
+      console.log('onPageChanged ' + nextPage);
     }
   }
 
@@ -52,7 +64,8 @@ export default class ViewPager extends Component {
       contentContainerStyle,
       showsHorizontalScrollIndicator:false,
       showsVerticalScrollIndicator:false,
-      onScroll:this.onScroll
+      onScroll:this.onScroll,
+      scrollEventThrottle:200
     };
     const tabStyle = {
       width:this.window.width,
