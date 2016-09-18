@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
-  TouchableHighlight
+  TouchableHighlight,
+  StatusBar
 } from 'react-native';
 
 export class Bars extends Component {
@@ -41,6 +42,9 @@ export default class TabLayout extends Component {
   constructor(props) {
     super(props);
     this.bindFunc();
+    this.state = {
+      activeIndex:0
+    };
   }
 
   get window() {
@@ -60,6 +64,9 @@ export default class TabLayout extends Component {
       x:index * width,
       y:0,
       animated:false
+    });
+    this.setState({
+      activeIndex:index
     });
   }
 
@@ -100,10 +107,13 @@ export default class TabLayout extends Component {
 
   renderBars(bars) {
     let children = [];
+    const {
+      activeIndex
+    } = this.state;
     React.Children.forEach(bars,(bar,index) => {
       let barElement = (
         <TouchableOpacity style={styles.barItem} key={index} onPress={this.onTabBarClick.bind(this,index)}>
-          {bar}
+          {React.cloneElement(bar,{active: activeIndex === index})}
         </TouchableOpacity>
       );
       children.push(barElement);

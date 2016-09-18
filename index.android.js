@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -20,6 +14,7 @@ import TabLayout, {
   Bars
 } from './components/TabLayout';
 import ViewPager from './components/ViewPager';
+import TabItem from './components/TabItem';
 
 class AwesomeProject extends Component {
   constructor(props) {
@@ -74,50 +69,13 @@ class AwesomeProject extends Component {
       showsHorizontalScrollIndicator:false,
       showsVerticalScrollIndicator:false
     };
-    // return (
-    //   <View style={[styles.container]}>
-    //     <ScrollView {...scrollViewProps} ref="ScrollView">
-    //       <View style={tabStyle}>
-    //         <ListView dataSource={this.state.dataSource} renderRow={(rowData) => <Text>{rowData}</Text>}></ListView>
-    //       </View>
-    //       <View style={tabStyle}>
-    //         <Text>Tab Content2</Text>
-    //       </View>
-    //       <View style={tabStyle}>
-    //         <Text>Tab Content3</Text>
-    //       </View>
-    //     </ScrollView>
-    //     <View style={[styles.tabs]}>
-    //       <TouchableOpacity style={[styles.tabItem]} onPress={this._onTabClick.bind(this,0)}>
-    //         <View>
-    //           <Text>Tab1</Text>
-    //         </View>
-    //       </TouchableOpacity>
-    //       <TouchableOpacity style={[styles.tabItem]} onPress={this._onTabClick.bind(this,1)}>
-    //         <View>
-    //           <Text>Tab2</Text>
-    //         </View>
-    //       </TouchableOpacity>
-    //       <TouchableOpacity style={[styles.tabItem]} onPress={this._onTabClick.bind(this,2)}>
-    //         <View>
-    //           <Text>Tab2</Text>
-    //         </View>
-    //       </TouchableOpacity>
-    //     </View>
-    //   </View>
-    // );
+    
     return (
       <TabLayout>
         <Bars type="Bars">
-        <View style={styles.tabItem}>
-            <Text>Tab1</Text>
-          </View>
-          <View style={styles.tabItem}>
-            <Text>Tab2</Text>
-          </View>
-          <View style={styles.tabItem}>
-            <Text>Tab3</Text>
-          </View>
+          <TabItem key={1} txt="Tab1"/>
+          <TabItem key={2} txt="Tab2"/>
+          <TabItem key={3} txt="Tab3"/>
         </Bars>
         <Tabs type="Tabs">
             <ViewPager/>
@@ -129,24 +87,6 @@ class AwesomeProject extends Component {
   }
 }
 
-// class AwesomeProject extends Component {
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <Text style={styles.welcome}>
-//           Welcome to React Native!
-//         </Text>
-//         <Text style={styles.instructions}>
-//           To get started, edit index.android.js
-//         </Text>
-//         <Text style={styles.instructions}>
-//           Double tap R on your keyboard to reload,{'\n'}
-//           Shake or press menu button for dev menu
-//         </Text>
-//       </View>
-//     );
-//   }
-// }
 
 const styles = StyleSheet.create({
   container: {
