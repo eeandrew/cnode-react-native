@@ -1,12 +1,15 @@
 import React, {
-  Component
+  Component,
+  PropTypes
 } from 'react';
 import {
   View,
   Text,
   ListView,
   StyleSheet,
-  Image
+  Image,
+  RefreshControl,
+  ActivityIndicator
 } from 'react-native';
 import autobind from 'autobind-decorator'
 import {observer} from "mobx-react/native";
@@ -17,6 +20,26 @@ export default class List extends Component {
   constructor(props) {
     super(props);
     this.ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
+    this.state = {
+      isRefreshing:false
+    };
+  }
+
+  @autobind
+  _onPullDown() {
+    const {
+      onPullDown
+    } = this.props;
+    onPullDown && onPullDown();
+  }
+
+  @autobind
+  _onPullUp() {
+    console.log('_onPullUp')
+    const {
+      onPullUp
+    } = this.props;
+    onPullUp && onPullUp();
   }
 
   renderRow(row) {
@@ -43,7 +66,8 @@ export default class List extends Component {
       ds 
     } = this;
     const {
-      items 
+      items,
+      isPullLoading,
     } = this.props;
     let _items = items.map((item) => {
       return {
@@ -60,14 +84,44 @@ export default class List extends Component {
         id: item.id,
         author_id: item.author_id
       }
-    })
-    console.log(_items[1]);
+    });
+    console.log(isPullLoading.status)
     const dataSource = ds.cloneWithRows(_items);
     return (
       <View style={{flex:1}}>
-        {_items.length <= 0 ? null : <ListView dataSource={dataSource} renderRow={this.renderRow}></ListView>}
+        {_items.length <= 0 ? <ActivityIndicator size="large" animating={true} color="#80bd01"/> : <ListView 
+          refreshControl={
+            <RefreshControl
+              refreshing={isPullLoading.status}
+              onRefresh={this._onPullDown}
+              tintColor="#ff0000"
+              title="Loading..."
+              titleColor="#00ff00"
+              colors={['#FFF']}
+              progressBackgroundColor="#80bd01"
+            />
+          } 
+        dataSource={dataSource} 
+        renderRow={this.renderRow}
+        onEndReachedThreshold={5}
+        onEndReached={this._onPullUp}
+        >
+        </ListView>}
       </View>
     );
+  }
+}
+
+List.propTypes = {
+  items: PropTypes.any,
+  onPullDown: PropTypes.func,
+  isPullLoading: PropTypes.any,
+  onPullUp: PropTypes.func,
+}
+
+List.defaultProps = {
+  isPullLoading: {
+    status:false
   }
 }
 

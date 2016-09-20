@@ -74,11 +74,25 @@ export default class ViewPager extends Component {
     if(store[tab].length > 0) return;
     setTimeout(()=>{
       getTopicList({
-        page:1,
+        page:store[`${tab}Page`],
         tab:this.mapPageToTab(pageIndex),
-        limit:10,
-      })
+        limit:3,
+      },true)
     },300);
+  }
+
+  @autobind
+  onPullUp(pageIndex) {
+      const {
+        store 
+      } = this.props;
+     const tab = this.mapPageToTab(pageIndex);
+     if(store[`${tab}Loading`].status) return;
+    getTopicList({
+      page:store[`${tab}Page`],
+      tab:this.mapPageToTab(pageIndex),
+      limit:10,
+    },true)
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -137,16 +151,16 @@ export default class ViewPager extends Component {
         </View>
         <ScrollView {...scrollViewProps}>
           <View style={tabStyle} key={1}>
-            <List items={store.all}/>
+            <List items={store.all} onPullDown={this.onPageChanged.bind(this,0)} onPullUp={this.onPullUp.bind(this,0)} isPullLoading={store.allLoading}/>
           </View>
           <View style={tabStyle} key={2}>
-            <List items={store.good}/>
+            <List items={store.good} onPullDown={this.onPageChanged.bind(this,1)} onPullUp={this.onPullUp.bind(this,1)} isPullLoading={store.goodLoading}/>
           </View>
           <View style={tabStyle} key={3}>
-            <List items={store.share}/>
+            <List items={store.share} onPullDown={this.onPageChanged.bind(this,2)} onPullUp={this.onPullUp.bind(this,2)} isPullLoading={store.shareLoading}/>
           </View>
           <View style={tabStyle} key={4}>
-            <List items={store.ask}/>
+            <List items={store.ask} onPullDown={this.onPageChanged.bind(this,3)} onPullUp={this.onPullUp.bind(this,3)} isPullLoading={store.askLoading}/>
           </View>
         </ScrollView>
       </View>

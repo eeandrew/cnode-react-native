@@ -6,10 +6,24 @@ import {
 
 class Store {
   @observable all = [];
+  @observable allLoading = {status:false};
+  @observable allPage = 1;
+
   @observable good = [];
+  @observable goodLoading = {status:false};
+  @observable goodPage = 1;
+
   @observable share = [];
+  @observable shareLoading = {status:false};
+  @observable sharePage = 1;
+
   @observable ask = [];
+  @observable askLoading = {status:false};
+  @observable askPage = 1;
+
   @observable job = [];
+  @observable jobLoading = {status:false};
+  @observable jobPage = 1;
 
   static getInstance() {
     if(!this.instance) {
