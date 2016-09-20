@@ -12,11 +12,14 @@ import {
   TouchableWithoutFeedback
 } from 'react-native';
 import autobind from 'autobind-decorator'
+import List from '../List';
+import {
+  getTopicList
+} from '../../actions';
 
 export default class ViewPager extends Component {
   constructor(props) {
     super(props);
-    this.onPageChanged = this.onPageChanged.bind(this);
     this.tabsNumber = 4;
     this.state = {
       indicatorLeftOffset:0,
@@ -26,6 +29,26 @@ export default class ViewPager extends Component {
 
   get window() {
     return Dimensions.get('window');
+  }
+
+  componentDidMount() {
+    this.onPageChanged(0);
+  }
+
+  mapPageToTab(pageIndex) {
+    pageIndex = parseInt(pageIndex);
+    switch(pageIndex) {
+      case 0:
+      return 'all';
+      case 1: 
+      return 'good';
+      case 2:
+      return 'share';
+      case 3:
+      return 'ask';
+      default:
+      return 'all';
+    }
   }
 
   @autobind
@@ -42,8 +65,20 @@ export default class ViewPager extends Component {
     }
   }
 
+  @autobind
   onPageChanged(pageIndex) {
-
+    const {
+      store 
+    } = this.props;
+    const tab = this.mapPageToTab(pageIndex);
+    if(store[tab].length > 0) return;
+    setTimeout(()=>{
+      getTopicList({
+        page:1,
+        tab:this.mapPageToTab(pageIndex),
+        limit:10,
+      })
+    },300);
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -53,6 +88,7 @@ export default class ViewPager extends Component {
     const nextPage = nextState.currentPage;
     if(currentPage !== nextPage) {
       console.log('onPageChanged ' + nextPage);
+      this.onPageChanged(nextPage);
     }
   }
 
@@ -76,7 +112,7 @@ export default class ViewPager extends Component {
     const tabStyle = {
       width:this.window.width,
       flex:1,
-      backgroundColor:'#FFF'
+      backgroundColor:'#EEE'
     };
     const leftOffset = {
       left: this.state.indicatorLeftOffset
@@ -84,6 +120,9 @@ export default class ViewPager extends Component {
     const {
       currentPage
     } = this.state;
+    const {
+      store
+    } = this.props;
     return (
       <View style={[styles.container]}>
         <View style={[styles.header]}>
@@ -97,10 +136,18 @@ export default class ViewPager extends Component {
            </View>
         </View>
         <ScrollView {...scrollViewProps}>
-          <View style={tabStyle} key={1}><Text>1</Text></View>
-          <View style={tabStyle} key={2}><Text>2</Text></View>
-          <View style={tabStyle} key={3}><Text>3</Text></View>
-          <View style={tabStyle} key={4}><Text>4</Text></View>
+          <View style={tabStyle} key={1}>
+            <List items={store.all}/>
+          </View>
+          <View style={tabStyle} key={2}>
+            <List items={store.good}/>
+          </View>
+          <View style={tabStyle} key={3}>
+            <List items={store.share}/>
+          </View>
+          <View style={tabStyle} key={4}>
+            <List items={store.ask}/>
+          </View>
         </ScrollView>
       </View>
     );

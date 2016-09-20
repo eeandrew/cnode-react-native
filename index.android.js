@@ -15,6 +15,11 @@ import TabLayout, {
 } from './components/TabLayout';
 import ViewPager from './components/ViewPager';
 import TabItem from './components/TabItem';
+import List from './components/List';
+import {
+  getTopicList
+} from './actions';
+import Store from './store';
 
 class AwesomeProject extends Component {
   constructor(props) {
@@ -29,6 +34,7 @@ class AwesomeProject extends Component {
       tabStyle:null,
       dataSource:ds.cloneWithRows(rows)
     }
+    
   }
 
   get window() {
@@ -47,6 +53,13 @@ class AwesomeProject extends Component {
         flex:1,
       },
     });
+    // setTimeout(()=>{
+    //   getTopicList({
+    //     page:1,
+    //     tab:'job',
+    //     limit:10,
+    //   });
+    // },1);
   }
   _onTabClick(index) {
     let width = this.window.width;
@@ -79,8 +92,8 @@ class AwesomeProject extends Component {
           <TabItem key={4} icon="github" txt="我"/>
         </Bars>
         <Tabs type="Tabs">
-            <ViewPager/>
-            <Text>Tab Content2</Text>
+            <ViewPager store={Store}/>
+            <List items={Store.all}/>
             <Text>Tab Content3</Text>
             <Text>Tab Content4</Text>
         </Tabs>
