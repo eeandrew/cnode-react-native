@@ -1,5 +1,5 @@
 import {
   AppRegistry
 } from 'react-native';
-import TabPage from './containers/TabPage'
-AppRegistry.registerComponent('AwesomeProject', () => TabPage);
+import HomePage from './containers/HomePage'
+AppRegistry.registerComponent('AwesomeProject', () => HomePage);

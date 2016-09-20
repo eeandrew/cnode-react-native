@@ -17,6 +17,8 @@ export class Bars extends Component {
   constructor(props) {
     super(props);
     this.TYPE = "Bars";
+    this.bars = null;
+    this.tabs = null;
   }
 
   render() {
@@ -62,6 +64,7 @@ export default class TabLayout extends Component {
     this.setState({
       activeIndex:index
     });
+    this.refs[`tab${index}`] && this.refs[`tab${index}`].init && this.refs[`tab${index}`].init();
   }
 
   @autobind
@@ -88,7 +91,7 @@ export default class TabLayout extends Component {
     React.Children.forEach(tabs,(tab,index) => {
       let tabItem = (
         <View style={tabStyle} key={index}>
-          {tab}
+          {React.cloneElement(tab,{ref: `tab${index}`})}
         </View>
       );
       children.push(tabItem);
@@ -125,28 +128,26 @@ export default class TabLayout extends Component {
      const {
       children
     } = this.props;
-    let bars = null;
-    let tabs = null;
     const childrenCount = React.Children.count(children);
     if(childrenCount !== 2) {
       throw new Error('TabLayout should contain only two children: Bars and Tabs.');
     }
     React.Children.forEach(children,(child,index) => {
       if(child.props.type === 'Bars') {
-        bars = child.props.children;
+        this.bars = child.props.children;
       }else if(child.props.type === 'Tabs') {
-        tabs = child.props.children;
+        this.tabs = child.props.children;
       }
     });
-    const barsCount = React.Children.count(bars);
-    const tabsCount = React.Children.count(tabs);
+    const barsCount = React.Children.count(this.bars);
+    const tabsCount = React.Children.count(this.tabs);
     if(barsCount !== tabsCount) {
       throw new Error('Bars and Tabs must have the same number of children.');
     }
     return (
       <View style={[styles.container]}>
-        {this.renderTabs(tabs)}
-        {this.renderBars(bars)}
+        {this.renderTabs(this.tabs)}
+        {this.renderBars(this.bars)}
       </View>
     );
   }

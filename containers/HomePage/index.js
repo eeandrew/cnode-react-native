@@ -19,8 +19,9 @@ import {
   getTopicList
 } from '../../actions';
 import Store from '../../store';
+import JobPage from '../JobPage';
 
-export default class TabPage extends Component {
+export default class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -78,7 +79,7 @@ export default class TabPage extends Component {
         </Bars>
         <Tabs type="Tabs">
             <ViewPager store={Store}/>
-            <List items={Store.all}/>
+            <JobPage />
             <Text>Tab Content3</Text>
             <Text>Tab Content4</Text>
         </Tabs>

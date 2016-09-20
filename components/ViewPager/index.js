@@ -72,6 +72,7 @@ export default class ViewPager extends Component {
     } = this.props;
     const tab = this.mapPageToTab(pageIndex);
     if(store[tab].length > 0) return;
+    if(store[`${tab}Loading`].status) return;
     setTimeout(()=>{
       getTopicList({
         page:store[`${tab}Page`],
