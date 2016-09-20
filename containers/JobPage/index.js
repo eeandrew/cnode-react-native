@@ -38,7 +38,7 @@ export default class JobPage extends Component {
     getTopicList({
       page:1,
       tab,
-      limit:5,
+      limit:10,
     },false);
   }
 

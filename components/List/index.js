@@ -58,19 +58,21 @@ export default class List extends Component {
       uri: row.author.avatar_url
     }
     return (
-      <TouchableHighlight onPress={this._onRowPress.bind(this,row)}>
-        <View style={[styles.list]} onPress={()=>{}}>
-          <View style={[styles.author]}>
-            <Image source={avatar} style={styles.avatar}/>
-            <View style={styles.author_info}>
-              <Text style={styles.author_name}>{row.author.loginname}</Text>
-              <Text style={styles.create_at}>{row.create_at}</Text>
+      <View>
+        <TouchableHighlight onPress={this._onRowPress.bind(this,row)}>
+          <View style={[styles.list]}>
+            <View style={[styles.author]}>
+              <Image source={avatar} style={styles.avatar}/>
+              <View style={styles.author_info}>
+                <Text style={styles.author_name}>{row.author.loginname}</Text>
+                <Text style={styles.create_at}>{row.create_at}</Text>
+              </View>
             </View>
+            <Text style={styles.title}>{row.title}</Text>
+            <HTMLView style={styles.content} value={row.content}></HTMLView>
           </View>
-          <Text style={styles.title}>{row.title}</Text>
-          <HTMLView style={styles.content} value={row.content}></HTMLView>
-        </View>
-      </TouchableHighlight>
+        </TouchableHighlight>
+      </View>
     );
   }
 

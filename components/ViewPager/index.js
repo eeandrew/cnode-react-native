@@ -78,7 +78,7 @@ export default class ViewPager extends Component {
       getTopicList({
         page:store[`${tab}Page`],
         tab:this.mapPageToTab(pageIndex),
-        limit:3,
+        limit:10,
       },true)
     },300);
   }

@@ -2,7 +2,8 @@ import React, {
   Component
 } from 'react';
 import {
-  Navigator
+  Navigator,
+  BackAndroid
 } from 'react-native';
 import HomePage from '../HomePage';
 import JobPage from '../JobPage';
