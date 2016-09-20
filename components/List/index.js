@@ -9,7 +9,8 @@ import {
   StyleSheet,
   Image,
   RefreshControl,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableHighlight
 } from 'react-native';
 import autobind from 'autobind-decorator'
 import {observer} from "mobx-react/native";
@@ -23,6 +24,7 @@ export default class List extends Component {
     this.state = {
       isRefreshing:false
     };
+    this.renderRow = this.renderRow.bind(this);
   }
 
   @autobind
@@ -42,12 +44,22 @@ export default class List extends Component {
     onPullUp && onPullUp();
   }
 
-  renderRow(row) {
+  @autobind
+  _onRowPress(row) {
+    const {
+      onRowPress
+    } = this.props;
+    onRowPress && onRowPress(row);
+  }
+
+  @autobind
+  renderRow(row, sectionID, rowID, highlightRow) {
     let avatar = {
       uri: row.author.avatar_url
     }
     return (
-        <View style={[styles.list]}>
+      <TouchableHighlight onPress={this._onRowPress.bind(this,row)}>
+        <View style={[styles.list]} onPress={()=>{}}>
           <View style={[styles.author]}>
             <Image source={avatar} style={styles.avatar}/>
             <View style={styles.author_info}>
@@ -58,6 +70,22 @@ export default class List extends Component {
           <Text style={styles.title}>{row.title}</Text>
           <HTMLView style={styles.content} value={row.content}></HTMLView>
         </View>
+      </TouchableHighlight>
+    );
+  }
+
+  @autobind
+   _renderSeparator(sectionID: number, rowID: number, adjacentRowHighlighted: bool) {
+    return (
+      <View
+        key={`${sectionID}-${rowID}`}
+        style={{
+          height: 10,
+          backgroundColor: '#EEE',
+          borderTopWidth:0.5,
+          borderTopColor:'#CCC'
+        }}
+      />
     );
   }
 
@@ -105,6 +133,7 @@ export default class List extends Component {
         renderRow={this.renderRow}
         onEndReachedThreshold={5}
         onEndReached={this._onPullUp}
+        renderSeparator={this._renderSeparator}
         >
         </ListView>}
       </View>
@@ -117,6 +146,7 @@ List.propTypes = {
   onPullDown: PropTypes.func,
   isPullLoading: PropTypes.any,
   onPullUp: PropTypes.func,
+  onRowPress: PropTypes.func
 }
 
 List.defaultProps = {
@@ -127,11 +157,6 @@ List.defaultProps = {
 
 const styles = StyleSheet.create({
   list: {
-    marginTop: 10,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#CCC',
-    borderTopWidth: 0.5,
-    borderTopColor: '#CCC',
     padding:10,
     backgroundColor:'#FFF',
     maxHeight:200

@@ -16,6 +16,7 @@ import List from '../List';
 import {
   getTopicList
 } from '../../actions';
+import DetailPage from '../../containers/DetailPage';
 
 export default class ViewPager extends Component {
   constructor(props) {
@@ -107,6 +108,17 @@ export default class ViewPager extends Component {
     }
   }
 
+  @autobind
+  onRowPress(row) {
+    const {
+      store 
+    } = this.props;
+    store.navigator && store.navigator.push({
+      name:'DetailComponent',
+      component: DetailPage
+    })
+  }
+
   render() {
     const contentContainerStyle = {
       width: this.window.width * 4,
@@ -152,7 +164,7 @@ export default class ViewPager extends Component {
         </View>
         <ScrollView {...scrollViewProps}>
           <View style={tabStyle} key={1}>
-            <List items={store.all} onPullDown={this.onPageChanged.bind(this,0)} onPullUp={this.onPullUp.bind(this,0)} isPullLoading={store.allLoading}/>
+            <List items={store.all} onRowPress={this.onRowPress} onPullDown={this.onPageChanged.bind(this,0)} onPullUp={this.onPullUp.bind(this,0)} isPullLoading={store.allLoading}/>
           </View>
           <View style={tabStyle} key={2}>
             <List items={store.good} onPullDown={this.onPageChanged.bind(this,1)} onPullUp={this.onPullUp.bind(this,1)} isPullLoading={store.goodLoading}/>

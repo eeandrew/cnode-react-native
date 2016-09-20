@@ -25,6 +25,8 @@ class Store {
   @observable jobLoading = {status:false};
   @observable jobPage = 1;
 
+  navigator = null;
+
   static getInstance() {
     if(!this.instance) {
       this.instance = new Store();
