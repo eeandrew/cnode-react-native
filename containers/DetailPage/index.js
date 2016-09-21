@@ -16,6 +16,7 @@ import {
 import {
   getTopicDetail
 } from '../../actions';
+import DetailTab from '../../components/DetailTab';
 
 @observer
 export default class DetailPage extends Component {
@@ -65,6 +66,7 @@ export default class DetailPage extends Component {
           </View>
           <HTMLView value={store.detail.content}></HTMLView>
         </ScrollView>
+        <DetailTab store={store}/>
       </View>
     );
   }

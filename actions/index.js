@@ -29,6 +29,9 @@ export function getTopicDetail(params) {
       Store.detail.content = data.content;
       Store.detail.title = data.title;
       Store.detail.author = data.author;
+      Store.detail.visit_count = data.visit_count;
+      Store.detail.reply_count = data.reply_count;
+      Store.detail.is_collect = data.is_collect;
       Store.detailLoading = false;
     }))
     .catch(action('on_topic_detail_error'),(error)=>{
