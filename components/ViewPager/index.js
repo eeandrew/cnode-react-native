@@ -9,7 +9,9 @@ import {
   Dimensions,
   ScrollView,
   TouchableHighlight,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  ViewPagerAndroid,
+  Platform
 } from 'react-native';
 import autobind from 'autobind-decorator'
 import List from '../List';
@@ -26,6 +28,7 @@ export default class ViewPager extends Component {
       indicatorLeftOffset:0,
       currentPage:0
     };
+    this.Scroller = (Platform.OS === 'ios') ? ScrollView : ViewPagerAndroid;
   }
 
   get window() {
@@ -64,6 +67,15 @@ export default class ViewPager extends Component {
         currentPage: Math.floor(scrollerX / this.window.width + 0.5)
       });
     }
+  }
+
+  @autobind
+  onPageSelected(params) {
+    console.log(params.nativeEvent.position);
+    this.setState({
+      currentPage: params.nativeEvent.position,
+      indicatorLeftOffset : params.nativeEvent.position * 70
+    });
   }
 
   @autobind
@@ -135,7 +147,9 @@ export default class ViewPager extends Component {
       showsHorizontalScrollIndicator:false,
       showsVerticalScrollIndicator:false,
       onScroll:this.onScroll,
-      scrollEventThrottle:200
+      scrollEventThrottle:200,
+      onPageSelected: this.onPageSelected,
+      style: (Platform.OS === 'ios') ? {} : styles.container,
     };
     const tabStyle = {
       width:this.window.width,
@@ -151,19 +165,22 @@ export default class ViewPager extends Component {
     const {
       store
     } = this.props;
+    const {
+      Scroller 
+    } = this;
     return (
       <View style={[styles.container]}>
         <View style={[styles.header]}>
           <View style={[styles.header]}>
             <TouchableWithoutFeedback ><View style={[styles.headerItem,styles.headerItemFirst]}><Text style={{color:currentPage === 0 ? '#80bd01' : '#bebebe'}}>全部</Text></View></TouchableWithoutFeedback>
-            <TouchableWithoutFeedback ><View style={[styles.headerItem,styles.headerItem]}><Text style={{color:currentPage === 1 ? '#80bd01' : '#bebebe'}}>精华</Text></View></TouchableWithoutFeedback>
-            <TouchableWithoutFeedback ><View style={[styles.headerItem,styles.headerItem]}><Text style={{color:currentPage === 2 ? '#80bd01' : '#bebebe'}}>分享</Text></View></TouchableWithoutFeedback>
+            <TouchableWithoutFeedback ><View style={[styles.headerItem]}><Text style={{color:currentPage === 1 ? '#80bd01' : '#bebebe'}}>精华</Text></View></TouchableWithoutFeedback>
+            <TouchableWithoutFeedback ><View style={[styles.headerItem]}><Text style={{color:currentPage === 2 ? '#80bd01' : '#bebebe'}}>分享</Text></View></TouchableWithoutFeedback>
             <TouchableWithoutFeedback ><View style={[styles.headerItem,styles.headerItemLast]}><Text style={{color:currentPage === 3 ? '#80bd01' : '#bebebe'}}>问答</Text></View></TouchableWithoutFeedback>
             <View style={[styles.indicator,leftOffset]}>
             </View>
            </View>
         </View>
-        <ScrollView {...scrollViewProps}>
+        <Scroller {...scrollViewProps}>
           <View style={tabStyle} key={1}>
             <List items={store.all} onRowPress={this.onRowPress} onPullDown={this.onPageChanged.bind(this,0)} onPullUp={this.onPullUp.bind(this,0)} isPullLoading={store.allLoading}/>
           </View>
@@ -176,7 +193,7 @@ export default class ViewPager extends Component {
           <View style={tabStyle} key={4}>
             <List items={store.ask} onRowPress={this.onRowPress}  onPullDown={this.onPageChanged.bind(this,3)} onPullUp={this.onPullUp.bind(this,3)} isPullLoading={store.askLoading}/>
           </View>
-        </ScrollView>
+        </Scroller>
       </View>
     );
   }
