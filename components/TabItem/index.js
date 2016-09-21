@@ -8,19 +8,33 @@ import {
   StyleSheet
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import autobind from 'autobind-decorator'
+
 export default class TabItem extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      active : false
+    }
+  }
+
+  @autobind
+  changeActiveStatus(isActive) {
+    this.setState({
+      active: isActive
+    });
   }
 
   render() {
     const {
-      active,
       txt,
       icon,
       activeColor,
       inactiveColor
     } = this.props;
+    const {
+      active
+    } = this.state;
     return (
       <View style={[styles.tabItem]}>
         <Icon name={icon} size={25} color={active?activeColor:inactiveColor}/>

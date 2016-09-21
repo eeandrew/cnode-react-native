@@ -44,9 +44,6 @@ export class Tabs extends Component {
 export default class TabLayout extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      activeIndex:0
-    };
   }
 
   get window() {
@@ -61,9 +58,14 @@ export default class TabLayout extends Component {
       y:0,
       animated:false
     });
-    this.setState({
-      activeIndex:index
-    });
+    let barsCount = React.Children.count(this.bars);
+    for(let i=0;i<barsCount;i++) {
+      if(index === i) {
+        this.refs[`bar${i}`].changeActiveStatus(true);
+      }else {
+        this.refs[`bar${i}`].changeActiveStatus(false);
+      }
+    }
     this.refs[`tab${index}`] && this.refs[`tab${index}`].init && this.refs[`tab${index}`].init();
   }
 
@@ -106,13 +108,10 @@ export default class TabLayout extends Component {
   @autobind
   renderBars(bars) {
     let children = [];
-    const {
-      activeIndex
-    } = this.state;
     React.Children.forEach(bars,(bar,index) => {
       let barElement = (
         <TouchableOpacity style={styles.barItem} key={index} onPress={this.onTabBarClick.bind(this,index)}>
-          {React.cloneElement(bar,{active: activeIndex === index})}
+          {React.cloneElement(bar,{ref: `bar${index}`})}
         </TouchableOpacity>
       );
       children.push(barElement);
@@ -122,6 +121,10 @@ export default class TabLayout extends Component {
         {children}
       </View>
     );
+  }
+
+  componentDidMount() {
+    this.refs.bar0.changeActiveStatus(true);
   }
 
   render() {

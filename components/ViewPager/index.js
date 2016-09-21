@@ -19,13 +19,13 @@ import {
   getTopicList
 } from '../../actions';
 import DetailPage from '../../containers/DetailPage';
+import Indicator from '../Indicator';
 
 export default class ViewPager extends Component {
   constructor(props) {
     super(props);
     this.tabsNumber = 4;
     this.state = {
-      indicatorLeftOffset:0,
       currentPage:0
     };
     this.Scroller = (Platform.OS === 'ios') ? ScrollView : ViewPagerAndroid;
@@ -63,7 +63,6 @@ export default class ViewPager extends Component {
     if(scrollerX >= 0 && scrollerX <= maxHScrollerOffset) {
       const percent = scrollerX / maxHScrollerOffset;
       this.setState({
-        indicatorLeftOffset: percent * maxScroll,
         currentPage: Math.floor(scrollerX / this.window.width + 0.5)
       });
     }
@@ -74,8 +73,8 @@ export default class ViewPager extends Component {
     console.log(params.nativeEvent.position);
     this.setState({
       currentPage: params.nativeEvent.position,
-      indicatorLeftOffset : params.nativeEvent.position * 70
     });
+    this.refs.indicator.updateOffset( params.nativeEvent.position * 70);
   }
 
   @autobind
@@ -156,9 +155,6 @@ export default class ViewPager extends Component {
       flex:1,
       backgroundColor:'#EEE'
     };
-    const leftOffset = {
-      left: this.state.indicatorLeftOffset
-    };
     const {
       currentPage
     } = this.state;
@@ -176,8 +172,7 @@ export default class ViewPager extends Component {
             <TouchableWithoutFeedback ><View style={[styles.headerItem]}><Text style={{color:currentPage === 1 ? '#80bd01' : '#bebebe'}}>精华</Text></View></TouchableWithoutFeedback>
             <TouchableWithoutFeedback ><View style={[styles.headerItem]}><Text style={{color:currentPage === 2 ? '#80bd01' : '#bebebe'}}>分享</Text></View></TouchableWithoutFeedback>
             <TouchableWithoutFeedback ><View style={[styles.headerItem,styles.headerItemLast]}><Text style={{color:currentPage === 3 ? '#80bd01' : '#bebebe'}}>问答</Text></View></TouchableWithoutFeedback>
-            <View style={[styles.indicator,leftOffset]}>
-            </View>
+            <Indicator ref="indicator"/>
            </View>
         </View>
         <Scroller {...scrollViewProps}>
