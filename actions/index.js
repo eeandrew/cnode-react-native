@@ -6,8 +6,6 @@ import {
 
 export function getTopicList(params,nextPage) {
   Store[`${params.tab}Loading`].status = true;
-  console.log(`${params.tab}Loading`)
-  console.log(params);
   Http.getTopics(params)
     .then(action('on_topic_list_recieved',(data)=>{
       data.forEach((item)=>{
@@ -21,3 +19,21 @@ export function getTopicList(params,nextPage) {
     }));
 }
 
+export function getTopicDetail(params) {
+  Store.detailLoading = true;
+  Http.getTopic(params)
+    .then(action('on_topic_detail_recieved',(data)=>{
+      console.log('on_topic_detail_recieved')
+      Store.detail.id = data.id;
+      Store.detail.author_id = data.author_id;
+      Store.detail.content = data.content;
+      Store.detail.title = data.title;
+      Store.detail.author = data.author;
+      Store.detailLoading = false;
+    }))
+    .catch(action('on_topic_detail_error'),(error)=>{
+      Store.content = '';
+      Store.title = '';
+      Store.detailLoading = false;
+    });
+}

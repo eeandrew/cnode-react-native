@@ -19,7 +19,7 @@ export default class Navigation extends Component {
   renderScene(route, navigator) {
     let Com = route.component;
     Store.navigator = navigator;
-    return <Com navigator={navigator}/>
+    return <Com navigator={navigator} params={route.params} store={Store}/>
   }
 
   configureScene(route) {
@@ -28,7 +28,7 @@ export default class Navigation extends Component {
 
   render() {
     return (
-      <Navigator initialRoute={{id: 'home', component:HomePage}} renderScene={this.renderScene.bind(this)}>
+      <Navigator initialRoute={{component:HomePage}} renderScene={this.renderScene.bind(this)}>
       </Navigator>
     );
   }

@@ -10,7 +10,8 @@ import {
   Image,
   RefreshControl,
   ActivityIndicator,
-  TouchableHighlight
+  TouchableHighlight,
+  ScrollView
 } from 'react-native';
 import autobind from 'autobind-decorator'
 import {observer} from "mobx-react/native";
@@ -69,7 +70,9 @@ export default class List extends Component {
               </View>
             </View>
             <Text style={styles.title}>{row.title}</Text>
-            <HTMLView style={styles.content} value={row.content}></HTMLView>
+            <View>
+              <HTMLView value={row.content}></HTMLView>
+            </View>
           </View>
         </TouchableHighlight>
       </View>

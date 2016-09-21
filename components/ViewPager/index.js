@@ -115,7 +115,8 @@ export default class ViewPager extends Component {
     } = this.props;
     store.navigator && store.navigator.push({
       name:'DetailComponent',
-      component: DetailPage
+      component: DetailPage,
+      params:{id: row.id}
     })
   }
 

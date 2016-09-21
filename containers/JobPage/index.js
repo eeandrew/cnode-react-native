@@ -12,7 +12,8 @@ import {
   Text,
   View,
 } from 'react-native';
-import autobind from 'autobind-decorator'
+import autobind from 'autobind-decorator';
+
 
 export default class JobPage extends Component {
   constructor(props) {
