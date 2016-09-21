@@ -168,13 +168,13 @@ export default class ViewPager extends Component {
             <List items={store.all} onRowPress={this.onRowPress} onPullDown={this.onPageChanged.bind(this,0)} onPullUp={this.onPullUp.bind(this,0)} isPullLoading={store.allLoading}/>
           </View>
           <View style={tabStyle} key={2}>
-            <List items={store.good} onPullDown={this.onPageChanged.bind(this,1)} onPullUp={this.onPullUp.bind(this,1)} isPullLoading={store.goodLoading}/>
+            <List items={store.good} onRowPress={this.onRowPress}  onPullDown={this.onPageChanged.bind(this,1)} onPullUp={this.onPullUp.bind(this,1)} isPullLoading={store.goodLoading}/>
           </View>
           <View style={tabStyle} key={3}>
-            <List items={store.share} onPullDown={this.onPageChanged.bind(this,2)} onPullUp={this.onPullUp.bind(this,2)} isPullLoading={store.shareLoading}/>
+            <List items={store.share} onRowPress={this.onRowPress}  onPullDown={this.onPageChanged.bind(this,2)} onPullUp={this.onPullUp.bind(this,2)} isPullLoading={store.shareLoading}/>
           </View>
           <View style={tabStyle} key={4}>
-            <List items={store.ask} onPullDown={this.onPageChanged.bind(this,3)} onPullUp={this.onPullUp.bind(this,3)} isPullLoading={store.askLoading}/>
+            <List items={store.ask} onRowPress={this.onRowPress}  onPullDown={this.onPageChanged.bind(this,3)} onPullUp={this.onPullUp.bind(this,3)} isPullLoading={store.askLoading}/>
           </View>
         </ScrollView>
       </View>

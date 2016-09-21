@@ -13,6 +13,7 @@ import {
   View,
 } from 'react-native';
 import autobind from 'autobind-decorator';
+import DetailPage from '../DetailPage';
 
 
 export default class JobPage extends Component {
@@ -54,11 +55,20 @@ export default class JobPage extends Component {
     },false);
   }
 
+  @autobind
+  onRowPress(row) {
+    Store.navigator && Store.navigator.push({
+      name:'DetailComponent',
+      component: DetailPage,
+      params:{id: row.id}
+    })
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <ActionBar title="招聘"/>
-        <List items={Store.job} onPullUp={this.onPullUp} onPullDown={this.onPullDown} isPullLoading={Store.jobLoading}/>
+        <List onRowPress={this.onRowPress}  items={Store.job} onPullUp={this.onPullUp} onPullDown={this.onPullDown} isPullLoading={Store.jobLoading}/>
       </View>
     );
   }
